@@ -1,0 +1,46 @@
+/*
+ * Created by Mohamed Naser on 7/10/23, 10:45 AM, 2023.
+ *
+ * Copyright (c) 2023 All rights reserved.
+ */
+
+package com.example.pizzaorder.screens.composable
+
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.style.TextAlign
+import com.example.pizzaorder.R
+import com.example.pizzaorder.composable.CustomIconButton
+import com.example.pizzaorder.ui.theme.Typography
+
+@Composable
+fun AppBar(
+    onClickBack: () -> Unit,
+    onClickFav: () -> Unit
+) {
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.SpaceBetween
+    ) {
+        CustomIconButton(
+            onClick = { onClickBack() },
+            drawableResId = R.drawable.ic_back
+        )
+        Text(
+            text = "Centered Text",
+            modifier = Modifier.weight(1f),
+            textAlign = TextAlign.Center,
+            style = Typography.titleLarge
+        )
+        CustomIconButton(
+            onClick = { onClickFav() },
+            drawableResId = R.drawable.ic_favorite
+        )
+    }
+}

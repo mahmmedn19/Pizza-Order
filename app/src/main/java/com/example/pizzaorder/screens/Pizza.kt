@@ -6,6 +6,8 @@
 
 package com.example.pizzaorder.screens
 
+import androidx.compose.animation.*
+import androidx.compose.animation.core.*
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -14,16 +16,16 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
 import androidx.compose.runtime.*
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.pizzaorder.R
+import com.example.pizzaorder.composable.IconButton
 import com.example.pizzaorder.composable.IngredientList
 import com.example.pizzaorder.composable.ResizableImage
 import com.example.pizzaorder.screens.composable.AppBar
@@ -50,7 +52,18 @@ fun PizzaScreen() {
     )
     val pagerState = rememberPagerState(0)
     var selectedIngredients by remember { mutableStateOf<Set<Int>>(emptySet()) }
+    // this im set when add ingredients
     var otherViewImage by remember { mutableStateOf(imageListIngredient[0]) }
+    var pizzaSizeState by remember { mutableStateOf<PizzaSizeState>(PizzaSizeState.M) }
+
+    val imageSize by animateFloatAsState(
+        targetValue = when (pizzaSizeState) {
+            PizzaSizeState.S -> 0.8f
+            PizzaSizeState.M -> 1f
+            PizzaSizeState.L -> 1.2f
+        },
+        animationSpec = tween(durationMillis = 300, easing = FastOutSlowInEasing)
+    )
 
     Column(
         modifier = Modifier.fillMaxSize(),
@@ -70,17 +83,27 @@ fun PizzaScreen() {
                 painter = painterResource(id = R.drawable.plate),
                 size = 250
             )
-            PizzaHorizontalPager(imageList, pagerState = pagerState)
+            PizzaHorizontalPager(
+                imageList,
+                pagerState = pagerState,
+                pizzaSizeState = imageSize
+            )
         }
         Text(
             text = "$ 17",
-            modifier = Modifier.fillMaxWidth().padding(
-                bottom = 16.dp
-            ),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(
+                    bottom = 16.dp
+                ),
             textAlign = TextAlign.Center,
             style = Typography.titleLarge
         )
-        PizzaSize()
+        PizzaSize(
+            onClickS = { pizzaSizeState = PizzaSizeState.S },
+            onClickM = { pizzaSizeState = PizzaSizeState.M },
+            onClickL = { pizzaSizeState = PizzaSizeState.L}
+        )
         Text(
             text = "CUSTOMIZE YOUR PIZZA",
             modifier = Modifier
@@ -106,7 +129,14 @@ fun PizzaScreen() {
                 otherViewImage = ingredient
             }
         )
-
+        IconButton(
+            modifier = Modifier.padding(top = 16.dp),
+            onClick = { /*TODO*/ },
+            drawableResId = R.drawable.ic_cart,
+            text = stringResource(
+                R.string.add_to_cart
+            )
+        )
     }
 }
 

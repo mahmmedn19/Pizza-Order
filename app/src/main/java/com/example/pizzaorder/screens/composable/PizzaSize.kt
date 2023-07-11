@@ -14,9 +14,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.example.pizzaorder.composable.TextButton
-
 @Composable
-fun PizzaSize() {
+fun PizzaSize(
+    onClickS: () -> Unit,
+    onClickM: () -> Unit,
+    onClickL: () -> Unit,
+) {
     Row(
         horizontalArrangement = Arrangement.Center,
         modifier = Modifier.fillMaxWidth()
@@ -24,20 +27,20 @@ fun PizzaSize() {
         TextButton(
             modifier = Modifier.padding(end = 8.dp),
             onClick = {
-                // Handle S button click
+                onClickS()
             },
             text = "S"
         )
         TextButton(
             modifier = Modifier.padding(end = 8.dp),
             onClick = {
-                // Handle S button click
+                onClickM()
             },
             text = "M"
         )
         TextButton(
             onClick = {
-                // Handle S button click
+                onClickL()
             },
             text = "L"
         )

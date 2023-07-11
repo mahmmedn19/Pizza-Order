@@ -26,6 +26,7 @@ import androidx.compose.ui.unit.dp
 import com.example.pizzaorder.R
 import com.example.pizzaorder.composable.IngredientList
 import com.example.pizzaorder.composable.ResizableImage
+import com.example.pizzaorder.screens.composable.AppBar
 import com.example.pizzaorder.screens.composable.PizzaHorizontalPager
 import com.example.pizzaorder.screens.composable.PizzaSize
 import com.example.pizzaorder.ui.theme.Typography
@@ -48,16 +49,17 @@ fun PizzaScreen() {
         R.drawable.mushroom,
     )
     val pagerState = rememberPagerState(0)
-    var selectedIngredient by remember { mutableStateOf<Int?>(null) }
+    var selectedIngredients by remember { mutableStateOf<Set<Int>>(emptySet()) }
+    var otherViewImage by remember { mutableStateOf(imageListIngredient[0]) }
 
     Column(
         modifier = Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-/*        AppBar(
-            {*//*TODO*//* },
-            {*//*TODO*//* }
-        )*/
+        AppBar(
+            {/*TODO*/ },
+            {/*TODO*/ }
+        )
         Box(
             modifier = Modifier
                 .fillMaxWidth()
@@ -91,12 +93,18 @@ fun PizzaScreen() {
             textAlign = TextAlign.Start,
             style = Typography.labelSmall
         )
+
         IngredientList(
             ingredients = imageListIngredient,
+            selectedIngredients = selectedIngredients,
             onIngredientSelected = { ingredient ->
-                selectedIngredient = ingredient
-            },
-            selectedIngredient = selectedIngredient
+                selectedIngredients = if (selectedIngredients.contains(ingredient)) {
+                    selectedIngredients.minus(ingredient)
+                } else {
+                    selectedIngredients.plus(ingredient)
+                }
+                otherViewImage = ingredient
+            }
         )
 
     }

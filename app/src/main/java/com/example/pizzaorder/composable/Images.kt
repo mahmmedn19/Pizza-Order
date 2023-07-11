@@ -50,8 +50,8 @@ fun ResizableImage(
 @Composable
 fun IngredientList(
     ingredients: List<Int>,
-    onIngredientSelected: (Int) -> Unit,
-    selectedIngredient: Int?
+    selectedIngredients: Set<Int>,
+    onIngredientSelected: (Int) -> Unit
 ) {
     LazyRow(
         horizontalArrangement = Arrangement.spacedBy(8.dp),
@@ -59,12 +59,14 @@ fun IngredientList(
     )  {
         items(ingredients.size) { index ->
             val ingredient = ingredients[index]
-            val isSelected = ingredient == selectedIngredient
+            val isSelected = ingredient in selectedIngredients
             Image(
                 painter = painterResource(id = ingredient),
                 contentDescription = null,
                 modifier = Modifier
-                    .clickable { onIngredientSelected(ingredient) }
+                    .clickable {
+                        onIngredientSelected(ingredient)
+                    }
                     .size(60.dp)
                     .background(
                         color = if (isSelected) Green else Color.Transparent,
@@ -87,14 +89,18 @@ fun PreviewScreenImage() {
         R.drawable.sausage,
         R.drawable.mushroom,
     )
-    var selectedIngredient by remember { mutableStateOf<Int?>(null) }
+    var selectedIngredients by remember { mutableStateOf<Set<Int>>(emptySet()) }
 
     IngredientList(
         ingredients = imageList,
+        selectedIngredients = selectedIngredients,
         onIngredientSelected = { ingredient ->
-            selectedIngredient = ingredient
-        },
-        selectedIngredient = selectedIngredient
+            selectedIngredients = if (selectedIngredients.contains(ingredient)) {
+                selectedIngredients.minus(ingredient)
+            } else {
+                selectedIngredients.plus(ingredient)
+            }
+        }
     )
 }
 

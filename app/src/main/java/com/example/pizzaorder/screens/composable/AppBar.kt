@@ -13,6 +13,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import com.example.pizzaorder.R
 import com.example.pizzaorder.composable.CustomIconButton
@@ -33,7 +34,7 @@ fun AppBar(
             drawableResId = R.drawable.ic_back
         )
         Text(
-            text = "Centered Text",
+            text = stringResource(R.string.pizza),
             modifier = Modifier.weight(1f),
             textAlign = TextAlign.Center,
             style = Typography.titleLarge

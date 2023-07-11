@@ -58,11 +58,11 @@ fun PizzaScreen() {
 
     val imageSize by animateFloatAsState(
         targetValue = when (pizzaSizeState) {
-            PizzaSizeState.S -> 0.8f
+            PizzaSizeState.S -> 0.7f
             PizzaSizeState.M -> 1f
-            PizzaSizeState.L -> 1.2f
+            PizzaSizeState.L -> 1.1f
         },
-        animationSpec = tween(durationMillis = 300, easing = FastOutSlowInEasing)
+        animationSpec = tween(durationMillis = 300, easing = EaseOutSine)
     )
 
     Column(

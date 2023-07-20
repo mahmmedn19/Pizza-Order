@@ -51,15 +51,15 @@ fun PizzaScreen() {
         R.drawable.mushroom,
     )
     val pagerState = rememberPagerState(0)
-    var selectedIngredients by remember { mutableStateOf<Set<Int>>(emptySet()) }
+    var selectedIngredientsMap by remember { mutableStateOf<Map<Int, Set<Int>>>(emptyMap()) }
+
     // this im set when add ingredients
-    var otherViewImage by remember { mutableStateOf(imageListIngredient[0]) }
     var pizzaSizeState by remember { mutableStateOf<PizzaSizeState>(PizzaSizeState.M) }
 
     val imageSize by animateFloatAsState(
         targetValue = when (pizzaSizeState) {
             PizzaSizeState.S -> 0.7f
-            PizzaSizeState.M -> 1f
+            PizzaSizeState.M -> 0.9f
             PizzaSizeState.L -> 1.1f
         },
         animationSpec = tween(durationMillis = 300, easing = EaseOutSine)
@@ -84,9 +84,21 @@ fun PizzaScreen() {
                 size = 250
             )
             PizzaHorizontalPager(
-                imageList,
+                images = imageList,
                 pagerState = pagerState,
-                pizzaSizeState = imageSize
+                pizzaSizeState = imageSize,
+                selectedIngredientsMap = selectedIngredientsMap,
+                onIngredientSelected = { pizzaIndex, ingredient ->
+                    val currentIngredients =
+                        selectedIngredientsMap.getOrElse(pizzaIndex) { emptySet() }
+                    val updatedIngredients = if (currentIngredients.contains(ingredient)) {
+                        currentIngredients.minus(ingredient)
+                    } else {
+                        currentIngredients.plus(ingredient)
+                    }
+                    selectedIngredientsMap =
+                        selectedIngredientsMap + (pizzaIndex to updatedIngredients)
+                }
             )
         }
         Text(
@@ -102,7 +114,8 @@ fun PizzaScreen() {
         PizzaSize(
             onClickS = { pizzaSizeState = PizzaSizeState.S },
             onClickM = { pizzaSizeState = PizzaSizeState.M },
-            onClickL = { pizzaSizeState = PizzaSizeState.L}
+            onClickL = { pizzaSizeState = PizzaSizeState.L },
+            state = pizzaSizeState
         )
         Text(
             text = "CUSTOMIZE YOUR PIZZA",
@@ -116,17 +129,20 @@ fun PizzaScreen() {
             textAlign = TextAlign.Start,
             style = Typography.labelSmall
         )
-
         IngredientList(
             ingredients = imageListIngredient,
-            selectedIngredients = selectedIngredients,
+            selectedIngredients = selectedIngredientsMap.getOrElse(pagerState.currentPage) { emptySet() },
             onIngredientSelected = { ingredient ->
-                selectedIngredients = if (selectedIngredients.contains(ingredient)) {
-                    selectedIngredients.minus(ingredient)
+                val currentPage = pagerState.currentPage
+                val currentIngredients =
+                    selectedIngredientsMap.getOrElse(currentPage) { emptySet() }
+                val updatedIngredients = if (currentIngredients.contains(ingredient)) {
+                    currentIngredients.minus(ingredient)
                 } else {
-                    selectedIngredients.plus(ingredient)
+                    currentIngredients.plus(ingredient)
                 }
-                otherViewImage = ingredient
+                selectedIngredientsMap =
+                    selectedIngredientsMap + (currentPage to updatedIngredients)
             }
         )
         IconButton(
@@ -145,5 +161,3 @@ fun PizzaScreen() {
 fun PreviewScreen() {
     PizzaScreen()
 }
-
-

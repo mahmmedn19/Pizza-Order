@@ -8,20 +8,16 @@ package com.example.pizzaorder.composable
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.modifier.modifierLocalMapOf
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.pizzaorder.ui.theme.Typography
 
@@ -31,13 +27,21 @@ fun TextButton(
     modifier: Modifier = Modifier,
     text: String
 ) {
-        Text(
-            modifier= modifier.clickable { onClick() }.size(30.dp).background(Color.Transparent,
-                RoundedCornerShape(16.dp)
-            ),
-            text = text,
-            textAlign = TextAlign.Center,
-            style = Typography.labelLarge
-        )
+    val interactionSource = remember { MutableInteractionSource() }
+
+    Text(
+        modifier = modifier
+            .clickable(
+                interactionSource = interactionSource,
+                indication = null
+            ) {
+                onClick()
+            }
+            .size(48.dp)
+            .wrapContentHeight(),
+        text = text,
+        textAlign = TextAlign.Center,
+        style = Typography.labelLarge,
+    )
 }
 

@@ -24,6 +24,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.pizzaorder.R
 import com.example.pizzaorder.composable.IconButton
 import com.example.pizzaorder.composable.IngredientList
@@ -33,31 +34,32 @@ import com.example.pizzaorder.screens.composable.PizzaHorizontalPager
 import com.example.pizzaorder.screens.composable.PizzaSize
 import com.example.pizzaorder.ui.theme.Typography
 
-@OptIn(ExperimentalFoundationApi::class)
+
 @Composable
 fun PizzaScreen() {
-    val imageList = listOf(
-        R.drawable.bread_1,
-        R.drawable.bread_2,
-        R.drawable.bread_3,
-        R.drawable.bread_4,
-        R.drawable.bread_5,
+    val viewModel: PizzaViewModel = hiltViewModel()
+
+    val state by viewModel.uiState.collectAsState()
+
+
+    PizzaContent(
+        state = state,
+        onIngredientSelected = viewModel::getIngredientsSelection,
+        onPizzaSizeSelected = viewModel::onPizzaSizeSelected
     )
-    val imageListIngredient = listOf(
-        R.drawable.basil,
-        R.drawable.broccoli,
-        R.drawable.onion,
-        R.drawable.sausage,
-        R.drawable.mushroom,
-    )
+}
+
+
+@OptIn(ExperimentalFoundationApi::class)
+@Composable
+fun PizzaContent(
+    state: PizzaUiState,
+    onIngredientSelected: (Int, Int) -> Unit,
+    onPizzaSizeSelected: (PizzaSizeState) -> Unit
+) {
     val pagerState = rememberPagerState(0)
-    var selectedIngredientsMap by remember { mutableStateOf<Map<Int, Set<Int>>>(emptyMap()) }
-
-    // this im set when add ingredients
-    var pizzaSizeState by remember { mutableStateOf<PizzaSizeState>(PizzaSizeState.M) }
-
     val imageSize by animateFloatAsState(
-        targetValue = when (pizzaSizeState) {
+        targetValue = when (state.pizzaSizeState) {
             PizzaSizeState.S -> 0.7f
             PizzaSizeState.M -> 0.9f
             PizzaSizeState.L -> 1.1f
@@ -84,21 +86,9 @@ fun PizzaScreen() {
                 size = 250
             )
             PizzaHorizontalPager(
-                images = imageList,
+                images = state.breads,
                 pagerState = pagerState,
                 pizzaSizeState = imageSize,
-                selectedIngredientsMap = selectedIngredientsMap,
-                onIngredientSelected = { pizzaIndex, ingredient ->
-                    val currentIngredients =
-                        selectedIngredientsMap.getOrElse(pizzaIndex) { emptySet() }
-                    val updatedIngredients = if (currentIngredients.contains(ingredient)) {
-                        currentIngredients.minus(ingredient)
-                    } else {
-                        currentIngredients.plus(ingredient)
-                    }
-                    selectedIngredientsMap =
-                        selectedIngredientsMap + (pizzaIndex to updatedIngredients)
-                }
             )
         }
         Text(
@@ -112,10 +102,10 @@ fun PizzaScreen() {
             style = Typography.titleLarge
         )
         PizzaSize(
-            onClickS = { pizzaSizeState = PizzaSizeState.S },
-            onClickM = { pizzaSizeState = PizzaSizeState.M },
-            onClickL = { pizzaSizeState = PizzaSizeState.L },
-            state = pizzaSizeState
+            onClickS = { onPizzaSizeSelected(PizzaSizeState.S) },
+            onClickM = { onPizzaSizeSelected(PizzaSizeState.M) },
+            onClickL = { onPizzaSizeSelected(PizzaSizeState.L) },
+            state = state.pizzaSizeState
         )
         Text(
             text = "CUSTOMIZE YOUR PIZZA",
@@ -129,22 +119,14 @@ fun PizzaScreen() {
             textAlign = TextAlign.Start,
             style = Typography.labelSmall
         )
+
         IngredientList(
-            ingredients = imageListIngredient,
-            selectedIngredients = selectedIngredientsMap.getOrElse(pagerState.currentPage) { emptySet() },
-            onIngredientSelected = { ingredient ->
-                val currentPage = pagerState.currentPage
-                val currentIngredients =
-                    selectedIngredientsMap.getOrElse(currentPage) { emptySet() }
-                val updatedIngredients = if (currentIngredients.contains(ingredient)) {
-                    currentIngredients.minus(ingredient)
-                } else {
-                    currentIngredients.plus(ingredient)
-                }
-                selectedIngredientsMap =
-                    selectedIngredientsMap + (currentPage to updatedIngredients)
+            ingredients = state.breads[pagerState.currentPage].ingredients,
+            onIngredientSelected = { index ->
+                onIngredientSelected(index, pagerState.currentPage)
             }
         )
+
         IconButton(
             modifier = Modifier.padding(top = 16.dp),
             onClick = { /*TODO*/ },

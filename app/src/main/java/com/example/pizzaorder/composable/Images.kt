@@ -9,17 +9,16 @@ package com.example.pizzaorder.composable
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -28,7 +27,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.example.pizzaorder.R
+import com.example.pizzaorder.screens.Ingredient
 import com.example.pizzaorder.ui.theme.Green
 
 @Composable
@@ -49,27 +48,30 @@ fun ResizableImage(
 
 @Composable
 fun IngredientList(
-    ingredients: List<Int>,
-    selectedIngredients: Set<Int>,
+    modifier: Modifier = Modifier,
+    ingredients: List<Ingredient>,
     onIngredientSelected: (Int) -> Unit
 ) {
+    val interactionSource = remember { MutableInteractionSource() }
+
     LazyRow(
         horizontalArrangement = Arrangement.spacedBy(8.dp),
         contentPadding = PaddingValues(16.dp)
-    )  {
-        items(ingredients.size) { index ->
-            val ingredient = ingredients[index]
-            val isSelected = ingredient in selectedIngredients
+    ) {
+        itemsIndexed(ingredients, key = { _, item -> item.id }) { index, ingredients ->
             Image(
-                painter = painterResource(id = ingredient),
+                painter = painterResource(id = ingredients.mainImage),
                 contentDescription = null,
-                modifier = Modifier
-                    .clickable {
-                        onIngredientSelected(ingredient)
+                modifier = modifier
+                    .clickable(
+                        interactionSource = interactionSource,
+                        indication = null
+                    ) {
+                        onIngredientSelected(index)
                     }
-                    .size(60.dp)
+                    .size(54.dp)
                     .background(
-                        color = if (isSelected) Green else Color.Transparent,
+                        color = if (ingredients.isSelected) Green else Color.Transparent,
                         shape = CircleShape
                     )
                     .padding(8.dp)
@@ -82,26 +84,7 @@ fun IngredientList(
 @Preview(showSystemUi = true, showBackground = true)
 @Composable
 fun PreviewScreenImage() {
-    val imageList = listOf(
-        R.drawable.basil,
-        R.drawable.broccoli,
-        R.drawable.onion,
-        R.drawable.sausage,
-        R.drawable.mushroom,
-    )
-    var selectedIngredients by remember { mutableStateOf<Set<Int>>(emptySet()) }
 
-    IngredientList(
-        ingredients = imageList,
-        selectedIngredients = selectedIngredients,
-        onIngredientSelected = { ingredient ->
-            selectedIngredients = if (selectedIngredients.contains(ingredient)) {
-                selectedIngredients.minus(ingredient)
-            } else {
-                selectedIngredients.plus(ingredient)
-            }
-        }
-    )
 }
 
 

@@ -6,68 +6,73 @@
 
 package com.example.pizzaorder.screens.composable
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.scaleIn
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.PagerState
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
-import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import coil.compose.AsyncImage
+import coil.request.ImageRequest
+import coil.size.Scale
+import com.example.pizzaorder.screens.Bread
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun PizzaHorizontalPager(
-    images: List<Int>,
+    images: List<Bread>,
     pagerState: PagerState,
     pizzaSizeState: Float,
-    selectedIngredientsMap: Map<Int, Set<Int>>,
-    onIngredientSelected: (Int, Int) -> Unit
 ) {
     Column {
-        val currentPage = pagerState.currentPage
-        // Store the random offsets for each pizza
-        val pizzaOffsets by remember(currentPage) { mutableStateOf(mutableMapOf<Int, Pair<Dp, Dp>>()) }
-
         HorizontalPager(
             pageCount = images.size,
             state = pagerState,
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier.height(250.dp).fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically,
             contentPadding = PaddingValues(horizontal = 32.dp, vertical = 16.dp),
             pageSpacing = 16.dp
         ) { page ->
-            Box {
-                PizzaBox(
-                    image = images[page],
-                    scaleSize = pizzaSizeState
+            Box(
+                modifier = Modifier
+                    .scale(pizzaSizeState)
+                    .fillMaxSize(),
+                contentAlignment = Alignment.Center
+            ) {
+                AsyncImage(
+                    model = ImageRequest.Builder(LocalContext.current)
+                        .data(images[page].image)
+                        .crossfade(true)
+                        .scale(Scale.FILL)
+                        .build(),
+                    contentDescription = "Bread",
                 )
 
-                val ingredientsForPizza = selectedIngredientsMap[page] ?: emptySet()
-
-                ingredientsForPizza.shuffled().forEach { ingredient ->
-                    Image(
-                        painter = painterResource(id = ingredient),
-                        contentDescription = null,
+                images[page].ingredients.forEach { ingredients ->
+                    IngredientsItem(
+                        image = ingredients.image,
+                        isSelected = ingredients.isSelected,
                         modifier = Modifier
-                            .size(40.dp)
-                            .padding(4.dp)
-                            .align(Alignment.Center)
-                            .clickable {
-                                onIngredientSelected(page, ingredient)
-                            }
+                            .size(180.dp)
+                            .scale(pizzaSizeState)
                     )
                 }
             }
@@ -75,23 +80,23 @@ fun PizzaHorizontalPager(
     }
 }
 
+
+@OptIn(ExperimentalAnimationApi::class)
 @Composable
-fun PizzaBox(
+fun IngredientsItem(
     image: Int,
-    scaleSize: Float
+    isSelected: Boolean,
+    modifier: Modifier = Modifier,
 ) {
-    Box(
-        modifier = Modifier
-            .wrapContentSize(),
+    AnimatedVisibility(
+        visible = isSelected,
+        enter = scaleIn(initialScale = 10f) + fadeIn(),
+        exit = fadeOut(),
     ) {
         Image(
+            modifier = modifier,
             painter = painterResource(id = image),
-            contentDescription = null,
-            modifier = Modifier
-                .scale(scaleSize)
-                .size(200.dp),
-            alignment = Alignment.Center,
-            contentScale = ContentScale.Crop
+            contentDescription = "Bread"
         )
     }
 }

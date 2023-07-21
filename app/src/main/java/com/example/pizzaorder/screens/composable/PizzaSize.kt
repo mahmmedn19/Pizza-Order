@@ -6,27 +6,25 @@
 
 package com.example.pizzaorder.screens.composable
 
-import androidx.compose.animation.core.animateFloat
-import androidx.compose.animation.core.updateTransition
-import androidx.compose.foundation.background
+import androidx.compose.animation.core.LinearOutSlowInEasing
+import androidx.compose.animation.core.animateDpAsState
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.graphicsLayer
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.pizzaorder.composable.TextButton
 import com.example.pizzaorder.screens.PizzaSizeState
@@ -36,57 +34,71 @@ fun PizzaSize(
     onClickS: () -> Unit,
     onClickM: () -> Unit,
     onClickL: () -> Unit,
-    state: PizzaSizeState
+    state: PizzaSizeState,
+    modifier: Modifier = Modifier,
 ) {
-    val selectedButton = remember { mutableStateOf(state) }
 
-/*    val transition = updateTransition(selectedButton.value, label = "")
+    val position by animateDpAsState(
+        targetValue = when (state) {
+            PizzaSizeState.S -> 0.dp
+            PizzaSizeState.M -> 57.dp
+            PizzaSizeState.L -> 112.dp
+        }, label = "size Animation",
+        animationSpec = tween(
+            durationMillis = 300,
+            easing = LinearOutSlowInEasing
+        )
+    )
 
-    val boxOffsetY by transition.animateFloat(label = "") { buttonType ->
-        run {
-            val buttonIndex = when (buttonType) {
-                PizzaSizeState.S -> 0
-                PizzaSizeState.M -> 1
-                PizzaSizeState.L -> 2
-            }
-            (buttonIndex * 60).toFloat()
-        }
-    }*/
-
-    Row(
-        horizontalArrangement = Arrangement.Center,
-        verticalAlignment = Alignment.CenterVertically,
-        modifier = Modifier.fillMaxWidth()
+    Box(
+        modifier = modifier,
+        contentAlignment = Alignment.Center
     ) {
-/*        Box(
-            modifier = Modifier
-                .offset(x = (boxOffsetY).dp)
-                .size(40.dp)
-                .shadow(4.dp, CircleShape)
-        )*/
-        TextButton(
-            modifier = Modifier.padding(end = 8.dp),
-            onClick = {
-                onClickS()
-                selectedButton.value = PizzaSizeState.S
-            },
-            text = "S"
-        )
-        TextButton(
-            modifier = Modifier.padding(end = 8.dp),
-            onClick = {
-                onClickM()
-                selectedButton.value = PizzaSizeState.M
-            },
-            text = "M"
-        )
-        TextButton(
-            onClick = {
-                onClickL()
-                selectedButton.value = PizzaSizeState.L
-            },
-            text = "L"
-        )
-    }
+        Row(
+            modifier = modifier
+                .matchParentSize(),
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            Card(
+                modifier = Modifier
+                    .size(45.dp)
+                    .offset(x = position, y = 0.dp),
+                shape = CircleShape,
+                elevation = CardDefaults.cardElevation(
+                    defaultElevation = 5.dp,
+                ),
+                colors = CardDefaults.cardColors(
+                    containerColor = Color.White,
+                    contentColor = Color.Black
+                ),
+            ) {
 
+            }
+        }
+        Row(
+            modifier = modifier,
+            horizontalArrangement = Arrangement.Center,
+        ) {
+            TextButton(
+                modifier = Modifier.padding(end = 8.dp),
+                onClick = {
+                    onClickS()
+                },
+                text = "S"
+            )
+            TextButton(
+                modifier = Modifier.padding(end = 8.dp),
+                onClick = {
+                    onClickM()
+                },
+                text = "M"
+            )
+            TextButton(
+                onClick = {
+                    onClickL()
+                },
+                text = "L"
+            )
+        }
+    }
 }

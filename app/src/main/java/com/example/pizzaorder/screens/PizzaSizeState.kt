@@ -5,6 +5,24 @@
  */
 
 package com.example.pizzaorder.screens
+data class PizzaUiState(
+    val id: Int = 0,
+    val breads: List<Bread> = emptyList(),
+    val pizzaSizeState: PizzaSizeState=PizzaSizeState.M,
+    )
+data class Bread(
+    val id: Int = 0,
+    val image: Int = 0,
+    val price: Int = 0,
+    val ingredients: List<Ingredient> = emptyList(),
+)
+data class Ingredient(
+    val id: Int,
+    val name: String = "",
+    val mainImage: Int = 0,
+    val image: Int = 0,
+    var isSelected: Boolean = false,
+)
 
 sealed class PizzaSizeState {
     object S : PizzaSizeState()

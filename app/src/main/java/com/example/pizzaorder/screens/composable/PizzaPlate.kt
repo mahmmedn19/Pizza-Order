@@ -71,8 +71,8 @@ fun PizzaHorizontalPager(
                         image = ingredients.image,
                         isSelected = ingredients.isSelected,
                         modifier = Modifier
-                            .size(180.dp)
-                            .scale(pizzaSizeState)
+                            .size(120.dp)
+                            .padding(pizzaSizeState.dp)
                     )
                 }
             }

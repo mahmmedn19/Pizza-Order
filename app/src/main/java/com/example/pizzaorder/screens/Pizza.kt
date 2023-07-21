@@ -25,6 +25,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.airbnb.lottie.compose.*
 import com.example.pizzaorder.R
 import com.example.pizzaorder.composable.IconButton
 import com.example.pizzaorder.composable.IngredientList
@@ -33,7 +34,6 @@ import com.example.pizzaorder.screens.composable.AppBar
 import com.example.pizzaorder.screens.composable.PizzaHorizontalPager
 import com.example.pizzaorder.screens.composable.PizzaSize
 import com.example.pizzaorder.ui.theme.Typography
-
 
 @Composable
 fun PizzaScreen() {
@@ -60,9 +60,9 @@ fun PizzaContent(
     val pagerState = rememberPagerState(0)
     val imageSize by animateFloatAsState(
         targetValue = when (state.pizzaSizeState) {
-            PizzaSizeState.S -> 0.7f
-            PizzaSizeState.M -> 0.9f
-            PizzaSizeState.L -> 1.1f
+            PizzaSizeState.S -> 1f
+            PizzaSizeState.M -> 1.2f
+            PizzaSizeState.L -> 1.4f
         },
         animationSpec = tween(durationMillis = 300, easing = EaseOutSine)
     )

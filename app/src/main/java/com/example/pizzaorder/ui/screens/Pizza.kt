@@ -1,10 +1,10 @@
 /*
- * Created by Mohamed Naser on 7/10/23, 9:46 AM, 2023.
+ * Created by Mohamed Naser on 8/4/23, 5:50 PM, 2023.
  *
  * Copyright (c) 2023 All rights reserved.
  */
 
-package com.example.pizzaorder.screens
+package com.example.pizzaorder.ui.screens
 
 import androidx.compose.animation.*
 import androidx.compose.animation.core.*
@@ -27,12 +27,12 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.airbnb.lottie.compose.*
 import com.example.pizzaorder.R
-import com.example.pizzaorder.composable.IconButton
-import com.example.pizzaorder.composable.IngredientList
-import com.example.pizzaorder.composable.ResizableImage
-import com.example.pizzaorder.screens.composable.AppBar
-import com.example.pizzaorder.screens.composable.PizzaHorizontalPager
-import com.example.pizzaorder.screens.composable.PizzaSize
+import com.example.pizzaorder.ui.composable.IconButton
+import com.example.pizzaorder.ui.composable.IngredientList
+import com.example.pizzaorder.ui.composable.ResizableImage
+import com.example.pizzaorder.ui.screens.composable.AppBar
+import com.example.pizzaorder.ui.screens.composable.PizzaHorizontalPager
+import com.example.pizzaorder.ui.screens.composable.PizzaSize
 import com.example.pizzaorder.ui.theme.Typography
 
 @Composable

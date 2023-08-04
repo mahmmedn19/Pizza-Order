@@ -1,14 +1,14 @@
 /*
- * Created by Mohamed Naser on 7/11/23, 5:35 PM, 2023.
+ * Created by Mohamed Naser on 8/4/23, 5:50 PM, 2023.
  *
  * Copyright (c) 2023 All rights reserved.
  */
 
-package com.example.pizzaorder.screens
+package com.example.pizzaorder.ui.screens
 data class PizzaUiState(
     val id: Int = 0,
     val breads: List<Bread> = emptyList(),
-    val pizzaSizeState: PizzaSizeState=PizzaSizeState.M,
+    val pizzaSizeState: PizzaSizeState = PizzaSizeState.M,
     )
 data class Bread(
     val id: Int = 0,

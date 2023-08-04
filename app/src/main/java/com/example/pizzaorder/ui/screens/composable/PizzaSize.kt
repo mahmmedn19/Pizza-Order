@@ -1,10 +1,10 @@
 /*
- * Created by Mohamed Naser on 7/10/23, 12:48 PM, 2023.
+ * Created by Mohamed Naser on 8/4/23, 5:50 PM, 2023.
  *
  * Copyright (c) 2023 All rights reserved.
  */
 
-package com.example.pizzaorder.screens.composable
+package com.example.pizzaorder.ui.screens.composable
 
 import androidx.compose.animation.core.LinearOutSlowInEasing
 import androidx.compose.animation.core.animateDpAsState
@@ -26,8 +26,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import com.example.pizzaorder.composable.TextButton
-import com.example.pizzaorder.screens.PizzaSizeState
+import com.example.pizzaorder.ui.composable.TextButton
+import com.example.pizzaorder.ui.screens.PizzaSizeState
 
 @Composable
 fun PizzaSize(

@@ -1,10 +1,10 @@
 /*
- * Created by Mohamed Naser on 7/10/23, 12:07 PM, 2023.
+ * Created by Mohamed Naser on 8/4/23, 5:50 PM, 2023.
  *
  * Copyright (c) 2023 All rights reserved.
  */
 
-package com.example.pizzaorder.screens.composable
+package com.example.pizzaorder.ui.screens.composable
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExperimentalAnimationApi
@@ -33,7 +33,7 @@ import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import coil.size.Scale
-import com.example.pizzaorder.screens.Bread
+import com.example.pizzaorder.ui.screens.Bread
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable

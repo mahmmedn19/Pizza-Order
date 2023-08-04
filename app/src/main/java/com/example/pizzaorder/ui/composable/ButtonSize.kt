@@ -4,7 +4,7 @@
  * Copyright (c) 2023 All rights reserved.
  */
 
-package com.example.pizzaorder.composable
+package com.example.pizzaorder.ui.composable
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable

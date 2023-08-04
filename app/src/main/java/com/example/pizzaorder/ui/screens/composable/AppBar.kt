@@ -1,10 +1,10 @@
 /*
- * Created by Mohamed Naser on 7/10/23, 10:45 AM, 2023.
+ * Created by Mohamed Naser on 8/4/23, 5:51 PM, 2023.
  *
  * Copyright (c) 2023 All rights reserved.
  */
 
-package com.example.pizzaorder.screens.composable
+package com.example.pizzaorder.ui.screens.composable
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
@@ -16,7 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import com.example.pizzaorder.R
-import com.example.pizzaorder.composable.CustomIconButton
+import com.example.pizzaorder.ui.composable.CustomIconButton
 import com.example.pizzaorder.ui.theme.Typography
 
 @Composable

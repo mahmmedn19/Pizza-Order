@@ -1,10 +1,10 @@
 /*
- * Created by Mohamed Naser on 7/11/23, 1:13 PM, 2023.
+ * Created by Mohamed Naser on 8/4/23, 5:51 PM, 2023.
  *
  * Copyright (c) 2023 All rights reserved.
  */
 
-package com.example.pizzaorder.composable
+package com.example.pizzaorder.ui.composable
 
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row

@@ -1,10 +1,10 @@
 /*
- * Created by Mohamed Naser on 7/20/23, 2:19 PM, 2023.
+ * Created by Mohamed Naser on 8/4/23, 5:50 PM, 2023.
  *
  * Copyright (c) 2023 All rights reserved.
  */
 
-package com.example.pizzaorder.screens
+package com.example.pizzaorder.ui.screens
 
 import androidx.lifecycle.ViewModel
 import com.example.pizzaorder.R

@@ -18,6 +18,7 @@ fun CustomIconButton(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     drawableResId: Int,
+    //suggest(todo): better to have content description for images
     contentDescription: String? = null,
     tint: Color = Color.Black
 ) {

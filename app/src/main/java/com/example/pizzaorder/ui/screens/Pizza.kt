@@ -71,10 +71,6 @@ fun PizzaContent(
         modifier = Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        AppBar(
-            {/*TODO*/ },
-            {/*TODO*/ }
-        )
         Box(
             modifier = Modifier
                 .fillMaxWidth()
@@ -87,12 +83,12 @@ fun PizzaContent(
             )
             PizzaHorizontalPager(
                 images = state.breads,
-                pagerState = pagerState,
+                pagerState = state.pagerState,
                 pizzaSizeState = imageSize,
             )
         }
         Text(
-            text = "$ 17",
+            text = "${state.price} $",
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(
@@ -121,9 +117,9 @@ fun PizzaContent(
         )
 
         IngredientList(
-            ingredients = state.breads[pagerState.currentPage].ingredients,
+            ingredients = state.breads[state.pagerState.currentPage].ingredients,
             onIngredientSelected = { index ->
-                onIngredientSelected(index, pagerState.currentPage)
+                onIngredientSelected(index, state.pagerState.currentPage)
             }
         )
 

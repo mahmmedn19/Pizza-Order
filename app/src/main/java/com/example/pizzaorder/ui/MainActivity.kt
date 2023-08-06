@@ -15,6 +15,8 @@ import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.compose.rememberNavController
+import com.example.pizzaorder.ui.navigation.NavHostController
 import com.example.pizzaorder.ui.screens.PizzaScreen
 import com.example.pizzaorder.ui.theme.PizzaOrderTheme
 import dagger.hilt.android.AndroidEntryPoint
@@ -30,7 +32,8 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    GreetingPreview()
+                    val navController = rememberNavController()
+                    NavHostController(navController)
                 }
             }
         }
@@ -41,6 +44,5 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun GreetingPreview() {
     PizzaOrderTheme {
-        PizzaScreen()
     }
 }

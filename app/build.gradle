@@ -82,6 +82,9 @@ dependencies {
     kapt "com.google.dagger:hilt-compiler:2.44"
 
     implementation "com.airbnb.android:lottie-compose:6.0.0"
+    def navVersion = "2.6.0"
+    implementation "androidx.navigation:navigation-compose:$navVersion"
+
 
 
 

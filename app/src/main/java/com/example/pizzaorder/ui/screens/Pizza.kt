@@ -25,18 +25,23 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import com.airbnb.lottie.compose.*
 import com.example.pizzaorder.R
 import com.example.pizzaorder.ui.composable.IconButton
 import com.example.pizzaorder.ui.composable.IngredientList
 import com.example.pizzaorder.ui.composable.ResizableImage
+import com.example.pizzaorder.ui.navigation.Screen
 import com.example.pizzaorder.ui.screens.composable.AppBar
 import com.example.pizzaorder.ui.screens.composable.PizzaHorizontalPager
 import com.example.pizzaorder.ui.screens.composable.PizzaSize
 import com.example.pizzaorder.ui.theme.Typography
 
 @Composable
-fun PizzaScreen() {
+fun PizzaScreen(
+    navHostController: NavHostController
+) {
     val viewModel: PizzaViewModel = hiltViewModel()
 
     val state by viewModel.uiState.collectAsState()
@@ -44,6 +49,7 @@ fun PizzaScreen() {
 
     PizzaContent(
         state = state,
+        navHostController,
         onIngredientSelected = viewModel::getIngredientsSelection,
         onPizzaSizeSelected = viewModel::onPizzaSizeSelected
     )
@@ -54,6 +60,7 @@ fun PizzaScreen() {
 @Composable
 fun PizzaContent(
     state: PizzaUiState,
+    navHostController: NavHostController,
     onIngredientSelected: (Int, Int) -> Unit,
     onPizzaSizeSelected: (PizzaSizeState) -> Unit
 ) {
@@ -125,10 +132,12 @@ fun PizzaContent(
 
         IconButton(
             modifier = Modifier.padding(top = 16.dp),
-            onClick = { /*TODO*/ },
+            onClick = {
+                      navHostController.navigate(Screen.OrderScreen.rout)
+            },
             drawableResId = R.drawable.ic_cart,
             text = stringResource(
-                R.string.add_to_cart
+                R.string.order_Pizza
             )
         )
     }
@@ -137,5 +146,5 @@ fun PizzaContent(
 @Preview(showSystemUi = true, showBackground = true)
 @Composable
 fun PreviewScreen() {
-    PizzaScreen()
+    PizzaScreen(rememberNavController())
 }
